@@ -1,46 +1,33 @@
-k = int(input())
-in_A = list(map(str, input().split()))
-A = in_A
-num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-temp = num
+n = int(input())
+in_S = input()
 
-def indf(A):
-    ind = 0
-    while(A[ind] != ">"):
-        ind += 1
-    return ind
+m_S = in_S.split(">")
+my_S = []
+max_n = str()
+num = "0123456789"
 
-def max_f(A, temp):
-    max_r = []
-    e = len(temp)-1
+n_S = in_S.split("<")
+ny_S = []
+min_n = str()
 
-    for i in range(k):
-        if('<' in A):
-            for i in temp[e - indf(A):]:
-                max_r.append(i)
-            temp = temp[:e - indf(A)]
-            A = A[indf(A):]
-        else:
-            temp.sort(reverse = True)
-            print(temp)
-            for i in range(k-len(max_r)+1):
-                max_r.append(temp[i])
-    return max_r
+for i in m_S:
+    my_S.append(i.split(" "))
 
-def min_f(A, temp):
-    min_r = []
+for i in my_S:
+    x = i.count("<") + 1
+    max_n = max_n + num[-x:]
+    num = num[:-x]
 
-    for i in range(k):
-        if('<' in A):
-            for i in temp[:indf(A)+1]:
-                min_r.append(i)
-            temp = temp[indf(A)+1:]
-            A = A[indf(A):]
-        else:
-            temp.sort(reverse = True)
-            print(temp)
-            for i in range(k-len(min_r)+1):
-                min_r.append(temp[i])
-    return min_r
+print(max_n)
 
-print(max_f(A,temp), min_f(A, temp))
+num = "9876543210"
+
+for i in n_S:
+    if(">" not in i):
+        min_n = min_n + num[-1]
+        num = num[:-1]
+    else:
+        x = i.count(">")
+        min_n = min_n + num[-x-1:]
+        num = num[:-x-1]
+print(min_n)

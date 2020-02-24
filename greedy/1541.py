@@ -1,29 +1,38 @@
 inS = input()
 
+x = inS.split("+")
+
 num = []
-temp = inS.split("-")
-plus = 0
-result = 0
+c = []
+ch = False
+re = 0
 
-for i in temp:
-    if('+' in i):
-        z = i.split("+")
-        num.append(int(z[0]))
-        num.append(int(z[1]))
-        plus += 1
-    else:
+for i in x:
+    if("-" in i and ch == False):
+        y = i.split("-")
+        num.append(int(y[0]))
+        y[0] = 0
+        for i in y:
+            c.append(int(i))
+        ch = True
+    
+    elif("-" in i and ch == True):
+        y = i.split("-")
+        for i in y:
+            c.append(int(i))
+    
+    elif(ch == False):
         num.append(int(i))
+    
+    elif(ch == True):
+        c.append(int(i))
 
-minus = len(num) - (plus + 1)
+for i in num:
+    re += i
 
-num.sort()
+for i in c:
+    re -= i
 
-print("num : {}, plus : {}, minus : {}".format(num, plus, minus))
+print("x : {}, num :{}, c :{}".format(x, num, c))
 
-for i in range(plus+1):
-    result += num[i]
-
-for i in range(plus+1, len(num)):
-    result -= num[i]
-
-print(result)
+print(re)

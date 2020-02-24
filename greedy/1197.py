@@ -1,37 +1,39 @@
+from queue import PriorityQueue
+
+qu = PriorityQueue()
+
 V, E = list(map(int, input().split()))
-node = []
-U = [i+1 for i in range(V)]
-sum_n = 0
+visit = [0 for _ in range(V+1)]
+node = [[] for _ in range(V+1)]
 check = 0
+sum_n = 0
 
 for _ in range(E):
-    x, y, c = list(map(int, input().split()))
-    node.append([x, y, c])
-
-# print(node)
-
-node.sort(key = lambda x : x[2])
+    a, b, c = list(map(int, input().split()))
+    node[a].append([c, b])
+    node[b].append([c, a])
 
 def solve(a):
     global sum_n
-    global check
-    n1 = a[0]
-    n2 = a[1]
-    cost = a[2]
-    if(U[n1-1] != U[n2-1]):
-        print("link : {} - {}".format(n1,n2))
-        sum_n += cost
-        check += 1
-        if(U[n1-1] >= U[n2-1]):
-            U[n2-1] = U[n1-1]
-        else:
-            U[n1-1] = U[n2-1]
-        print("U : {}".format(U))
+    if(visit[a] != 0):
+        return
 
-for i in node:
-    if(check > V or check + 1 == V):
-        break
-    if(check < V):
+    visit[a] = 1
+
+    for i in node[a]:
+        qu.put(i)
+
+    while(qu.empty() == False):
+        cost, n_node = qu.get()
+        if(visit[n_node] == 0):
+            visit[n_node] = 1
+            sum_n += cost
+            for i in node[n_node]:
+                qu.put(i)
+
+
+for i in range(1,V+1):
+    if(visit[i] == 0):
         solve(i)
 
-print(sum_n, U)
+print(sum_n)

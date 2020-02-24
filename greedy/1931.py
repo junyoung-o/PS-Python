@@ -1,37 +1,21 @@
 N = int(input())
-arr = []
-P = []
+Se = []
 
 for i in range(N):
     start, end = map(int, input().split())
-    arr.append([start, end])
+    Se.append([start, end])
 
-arr.sort(reverse = True)
-arr.sort(key = lambda x : x[1], reverse = True)
+Se.sort(key = lambda x : (x[1],x[0]))
 
-for i in range(0, len(arr)-1):
-    index = i+1
-    while(arr[i][0] < arr[index][1]):
-        index += 1
-        if(index == N):
-            break
-    P.append(index)
-P.append(N)
+def solve(job):
+    start_time = 0
+    re = 0
 
-def maxj(a, b):
-    if(a >= b):
-        return a
-    else:
-        return b
+    for i in job:
+        if(i[0] >= start_time):
+            print(i)
+            re += 1
+            start_time = i[1]
+    return re
 
-def jobs(job):
-    if(job == N-1):
-        return 1
-    elif(job == N):
-        return 0
-
-    return maxj(jobs(job+1), jobs(P[job])+1)
-
-re = jobs(0)
-
-print(re, arr)
+print(solve(Se))

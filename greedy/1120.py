@@ -1,35 +1,20 @@
-A = str(input())
-B = str(input())
+A, B = list(map(str, input().split()))
 
-def g(A, B):
-    x = len(A)
-    y = len(B)
+x = 0
+nn =100
 
-    d = y - x
+n1 = len(A)
+n2 = len(B)
 
-    if(d == 0):
-        r = 0
-        x -= 1
-        while(x > -1):
-            if(A[x] != B[x]):
-                r += 1
-            x -= 1
-        print("A : {}, B : {}, d : {}, x : {}, r : {}".format(A, B, d, x, r))
-        return r
-    
-    i1 = B.find(A[0])
-    i2 = B.find(A[x-1])
-    print("A : {}, B : {}, d : {}, i1 : {}, i2 : {}\n".format(A, B, d, i1, i2))
+n3 = n2 - n1
 
-    if(i1 >= i2 and i1 > 0 and i2 == -1):
-        A = B[i1-1] + A
-        g(A, B)
-    elif(i1 == i2 and i2 != y):
-        A = A + B[i1+1]
-        g(A, B)
-    elif(i2 > i1):
-        A = A + B[i2+1]
-        g(A, B)
-        
-re = g(A, B)
-print(re)
+for i in range(n3+1):
+    for j in range(n1):
+        if(A[j] != B[i + j]):
+            x += 1
+        print("A[j] : {}, B[i+j] : {}, x : {}".format(A[j], B[i+j], x))
+
+    nn = min(nn,x)
+    x = 0
+
+print(nn)
