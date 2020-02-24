@@ -2,49 +2,59 @@ n = int(input())
 G = []
 r = 0
 
+def cal(G):
+    temp = 0
+
+    for i in G:
+        temp += i.count(1)
+    return temp
+
 for _ in range(n):
     G.append(list(map(int, input())))
 
-def fff(G, n, x, a, w):
-    temp = 0
-
-    if(w == 1):
-        for i in range(a,x):
-            for j in range(a, x):
-                temp += G[i][j]
-
-    if(w == 2):
-        for i in range(x,n):
-            for j in range(x, n):
-                temp += G[i][j]
-    if(w == 3):
-        for i in range(x, n):
-            for j in range(a, x):
-                temp += G[i][j]
-    if(w == 4):
-        for i in range(x, n):
-            for j in range(x,n):
-                temp += G[i][j]
-
+def solve(G,n, a):
+    temp = cal(G)
+    # print("G : {}, n : {}, a : {}".format(G, n, a))
     if(temp == 0):
         return 0
 
-    if(temp == x*x):
+    if(temp == n*n):
         return 1
 
-    np = x // 2
+    if(n == 2):
+        lu = G[0][0]
+        ru = G[0][1]
+        ld = G[1][0]
+        rd = G[1][1]
+    
+    else:
+        x = n // 2
 
-    lu = fff(G, n, np, a, 1)
-    ru = fff(G, n, np, np, 2)
-    ld = fff(G, n ,np, a, 3)
-    rd = fff(G, n ,np, np, 4)
+        Gp = []
+        for i in range(a,x):
+            Gp.append(G[i][:x])
+        
+        lu = solve(Gp,x,a)
+        Gp = []
 
-    x = "({}) ({}) ({}) ({})".format(lu, ru, ld, rd)
+        for i in range(a,x):
+            Gp.append(G[i][x:])
+        ru = solve(Gp,x,a)
+        Gp = []
 
-    return x
+        for i in range(x,n):
+            Gp.append(G[i][:x])
+        
+        ld = solve(Gp,x,a)
+        Gp = []
 
-r = fff(G,n, n, 0, 1)
+        for i in range(x,n):
+            Gp.append(G[i][x:])
+        rd = solve(Gp,x,a)
 
-for i in range(n):
-    print(G[i])
+    re = "({}{}{}{})".format(lu,ru,ld,rd)
+
+    return re
+
+r = solve(G,n,0)
 print(r)

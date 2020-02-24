@@ -1,54 +1,37 @@
-def checkav(arr):
-    temp = arr[0]
-    ck = 1
+def main():
+    n = True
+    while(n):
+        a, *test = list(map(int, input().split()))
+        result = 0
 
-    for i in arr:
-        if(i != temp):
-            ck = 0
+        if(a == 0):
+            n = False
             break
 
-    return ck
+        m = len(test) // 2
 
-def dicon(arr):
-    if(len(arr) == 0):
-        return 0
+        
 
-    if(len(arr) == 1):
-        return arr[0]
+def goqhwk(test):
+    while(len(test) > 0):
+        x = solve(len(test)-1,len(test), test)
+        test.pop()
+        if(result < x):
+            result = x
+    print(result)
 
-    if(len(arr) == 2):
-        temp = min(arr) * 2
-        return temp
-
-    ch = checkav(arr)
-
-    if(ch == 1):
-        rf = arr[0] * len(arr)
-        return rf
-
-    x = arr.index(min(arr))
-
-    left = dicon(arr[:x])
-    right = dicon(arr[x + 1:])
-
-    r = max(left, right)
-
+def solve(s, e, arr):
+    while(s > 0 and cal(arr[s:e]) <= cal(arr[s-1:e])):
+        s -= 1
+    
+    r = cal(arr[s:e])
+    
     return r
 
-t = True
+def cal(arr):
+    base = len(arr)
+    height = min(arr)
+    area = base * height
+    return area
 
-while(t):
-    test = list(map(int, input().split()))
-
-    if(sum(test) == 0):
-        t = False
-        break
-    
-    ch = checkav(test)
-
-    if(ch == 1):
-        re = test[0] * len(test)
-    else:
-        re = dicon(test)
-
-    print(re)
+main()
