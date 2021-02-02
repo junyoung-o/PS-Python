@@ -1,49 +1,56 @@
-N = int(input())
-sequence = []
-memo = []
+N, K = list(map(int, input().split()))
+Knap = []
+candidate = {}
 
-def set_sequence():
-    global sequence
+def set_Knap():
+    global Knap
     
     import sys
 
-    sequence = list(map(int, sys.stdin.readline().split()))
+    for _ in range(N):
+        w, v = list(map(int, sys.stdin.readline().split()))
+        Knap.append((w, v))
 
-def set_memo():
-    memo.append(sequence[0])
+def set_candidate():
+    candidate[K] = 0
 
 def init():
-    set_sequence()
-    set_memo()
+    set_Knap()
+    set_candidate()
+    return
 
-def is_extra():
-    check = True
-    for x in sequence:
-        if(x > 0):
-            check = False
-            break
+def sort_candidate():
+    global candidate
+    
+    cand = list(candidate.items())
 
-    if(check):
-        print(max(sequence))
+    candidate = dict(sorted(cand, key = lambda x : x[0], reverse = True))
 
-    return check
+def record_candidate():
+    global candidate
+    
+    for (w, v) in Knap:
+        cand = list(candidate.items())
+        for remain, values in cand:
+            if(remain < w):
+                break
+            
+            if(remain >= w):
+                if(remain - w in candidate.keys()):
+                    candidate[remain - w] = max(candidate[remain - w], values + v)
 
-def record():
-    for ind in range(1, N):
-        if(sequence[ind] < 0):
-            memo.append(max(0, memo[ind - 1] + sequence[ind]))
+                else:
+                    candidate[remain - w] = values + v
 
-        else:
-            memo.append(memo[ind - 1] + sequence[ind])
+        sort_candidate()
 
 def print_result():
-    print(max(memo))
+    values = candidate.values()
+    print(max(values))
 
 def main():
-    if(not is_extra()):
-        record()
-        print_result()
-
+    record_candidate()
+    print_result()
     return
     
 if(__name__ == "__main__"):
